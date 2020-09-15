@@ -91,14 +91,18 @@ def output_build_file(build_source, ignored_rules, output_extension, custom_baze
     # Remove extra newline at end of file.
     output = re.sub('\n\n$', '\n', output)
 
-    with open(build_file_path, 'r') as build_file:
-        original_build_source = build_file.read()
-        diff = unified_diff(original_build_source.splitlines(), output.splitlines())
-        diff_lines = []
-        for line in diff:
-            diff_lines.append(line)
-        if len(diff_lines) > 0:
-            checks[build_file_path] = diff_lines
+    try:
+        with open(build_file_path, 'r') as build_file:
+            original_build_source = build_file.read()
+    except FileNotFoundError:
+        original_build_source = ''
+
+    diff = unified_diff(original_build_source.splitlines(), output.splitlines())
+    diff_lines = []
+    for line in diff:
+        diff_lines.append(line)
+    if len(diff_lines) > 0:
+        checks[build_file_path] = diff_lines
 
     if update:
         with open(build_file_path, 'w') as build_file:

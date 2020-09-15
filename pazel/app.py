@@ -136,12 +136,12 @@ def main():
     if not args.check:
         print('Generated BUILD files for %s:' % args.input_path)
         for key, val in checks.items():
-            print(key)
+            print('//%s' % key)
     else:
         if len(checks) > 0:
             print('Would modify the following BUILD files for %s:' % args.input_path)
             for key, val in checks.items():
-                print(key)
+                print('//%s' % key)
                 for line in val:
                     print(line)
             exit(1)
