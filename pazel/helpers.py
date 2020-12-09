@@ -127,6 +127,11 @@ def _is_in_stdlib(mod, some_object):
             if 'site-packages' not in path:
                 sys.path.append(path)
 
+    if 'linux' in platform.system().lower():
+        for path in original_sys_path:
+            if 'dist-packages' not in path and 'site-packages' not in path:
+                sys.path.append(path)
+
     in_stdlib = False
 
     try:
