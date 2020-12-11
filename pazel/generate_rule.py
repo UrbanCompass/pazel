@@ -136,6 +136,11 @@ def generate_rule(script_path, template, package_names, module_names, data_deps,
         if multiple_deps:
             deps += ',\n'
 
+    if multiple_deps:
+        dep_list = deps.splitlines()
+        dep_list.sort(key=lambda x: x.replace(":", "."))
+        deps = "\n".join(dep_list) + "\n"
+
     # Even if a submodule of a local or external package is required, install the whole package.
     package_names = set([import_name_to_pip_name.get(p.split('.')[0], p.split('.')[0]) for p in package_names])
 
