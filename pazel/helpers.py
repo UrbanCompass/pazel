@@ -81,16 +81,16 @@ def is_ignored(script_path, ignored_rules):
                 except AttributeError:
                     break
 
-                assert len(elements) == 1, \
+                assert len(elements) <= 1, \
                     "Multiple source files not supported in %s." % ignored_rule
 
-                if elements[0].s == script_file_name:
+                if elements and elements[0].s == script_file_name:
                     ignored = True
                     break
 
         # The script file name may also given as a positional argument.
         for positional in func_call.args:
-            if positional.s == script_file_name:
+            if not isinstance(positional, ast.List) and positional.s == script_file_name:
                 ignored = True
                 break
 
