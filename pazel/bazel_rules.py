@@ -78,6 +78,11 @@ class BazelRule(object):
         """If the rule requires a special 'load' statement, return it, otherwise return None."""
         return None
 
+    @staticmethod
+    def replace_native():
+        """If this rule matches in addition to a native rule then don't use the native rule."""
+        return False
+
 
 class PyBinaryRule(BazelRule):
     """Class for representing Bazel-native py_binary."""
@@ -200,4 +205,12 @@ def infer_bazel_rule_type(script_path, script_source, custom_rules):
     if not bazel_rule_types:
         raise RuntimeError("No suitable Bazel rule type found for %s." % script_path)
 
-    return bazel_rule_types
+    filtered_rule_types = []
+    for rule in bazel_rule_types:
+        if rule.replace_native():
+            filtered_rule_types.append(rule)
+
+    if not filtered_rule_types:
+        filtered_rule_types = bazel_rule_types
+
+    return filtered_rule_types
