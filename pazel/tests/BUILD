@@ -40,3 +40,13 @@ py_test(
     size = "small",
     deps = ["//pazel:pazel_extensions"],
 )
+
+py_test(
+    name = "test_output_build",
+    srcs = ["test_output_build.py"],
+    size = "small",
+    deps = [
+        "//pazel:pazel_extensions", 
+        "//pazel:output_build"
+    ],
+)
