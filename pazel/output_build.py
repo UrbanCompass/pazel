@@ -48,8 +48,9 @@ def output_build_file(build_source, ignored_rules, output_extension, custom_baze
     ignored_source = '\n'.join(remaining_ignored_rules)
 
     if any(['requirement("' in source for source in (build_source, ignored_source)]):
-        in_ignored_load_statements = any(['requirement("' in statement for statement in
-                                          ignored_load_statements])
+        in_ignored_load_statements = any(
+            ['requirement("' in statement for statement in ignored_load_statements]
+        ) or any([', "requirement"' in statement for statement in ignored_load_statements])
 
         if not in_ignored_load_statements:
             header += _append_newline(requirement_load)
